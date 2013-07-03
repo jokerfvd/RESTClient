@@ -27,7 +27,7 @@ class EstabelecimentosProcessor {
 		mContext = context;
 	}
 
-	void getEstabelecimentos(EstabelecimentosProcessorCallback callback) {
+	void getEstabelecimentos(ProcessorCallback callback) {
 
 		// (4) Insert-Update the ContentProvider with a status column and
 		// results column
@@ -71,7 +71,9 @@ class EstabelecimentosProcessor {
 				values.put(EstabelecimentosConstants.NOME, estabelecimento.getNome());
 				values.put(EstabelecimentosConstants.ENDERECO, estabelecimento.getEndereco());
 				values.put(EstabelecimentosConstants.TELEFONE, estabelecimento.getTelefone());
-				values.put(EstabelecimentosConstants.RANK, estabelecimento.getRank());
+				//values.put(EstabelecimentosConstants.GOSTEI, estabelecimento.getGostei());
+				//values.put(EstabelecimentosConstants.LATITUDE, estabelecimento.getLatitude());
+				//values.put(EstabelecimentosConstants.LONGITUDE, estabelecimento.getLatitude());
 
 				Cursor cursor = mContext.getContentResolver().query(EstabelecimentosConstants.CONTENT_URI,
 						null, null, null, null);

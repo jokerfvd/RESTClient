@@ -62,7 +62,6 @@ public class MainActivity extends ListActivity {
 	    //monitorando o click no listView
 	    getListView().setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            	System.out.println("CLIQUEI "+position+"--"+parent.getItemAtPosition(position).toString());
             	Intent intent = new Intent(MainActivity.this, VerEstabelecimento.class);
                 intent.putExtra("ID", parent.getItemAtPosition(position).toString());
                 startActivity(intent);      

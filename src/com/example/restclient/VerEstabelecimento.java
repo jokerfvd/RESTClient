@@ -8,22 +8,33 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONStringer;
 
+import com.example.restclient.provider.EstabelecimentosConstants;
 import com.example.restclient.rest.Request;
 import com.example.restclient.rest.Response;
 import com.example.restclient.rest.RestClient;
 import com.example.restclient.rest.RestMethodFactory.Method;
+import com.example.restclient.service.ServiceHelper;
+import com.example.restclient.util.Logger;
 
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.database.Cursor;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 
 public class VerEstabelecimento extends Activity {
-
+	private static final String TAG = MainActivity.class.getSimpleName();
 	// "authenticity_token"=>"S9IoNL9/cwzQu3mlE0eGE9nDC6pXsVab2vriREcs0NE="
+	
+	private Long requestId;
+	private BroadcastReceiver requestReceiver;
+    private ServiceHelper mServiceHelper;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +48,11 @@ public class VerEstabelecimento extends Activity {
 
 		Intent intent = getIntent();
 		String id = intent.getStringExtra("ID");
+		
+		//MANEIRA CERTA
+		requestId = mServiceHelper.getEstabelecimento(id);
 
+		/*
 		URI uri = URI
 				.create("http://restserveruff.herokuapp.com/estabelecimentos/"
 						+ id + ".json");
@@ -69,6 +84,70 @@ public class VerEstabelecimento extends Activity {
 				e.printStackTrace();
 			}
 		}
+		*/
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		
+		IntentFilter filter = new IntentFilter(ServiceHelper.ACTION_REQUEST_RESULT);
+		requestReceiver = new BroadcastReceiver() {
+
+			@Override
+			public void onReceive(Context context, Intent intent) {
+
+				long resultRequestId = intent
+						.getLongExtra(ServiceHelper.EXTRA_REQUEST_ID, 0);
+
+				if (resultRequestId == requestId) {
+
+					int resultCode = intent.getIntExtra(ServiceHelper.EXTRA_RESULT_CODE, 0);
+
+					if (resultCode == 200) {
+
+						preencheDados();
+					} else {
+					}
+				} else {
+					Logger.debug(TAG, "Result is NOT for our request ID");
+				}
+
+			}
+		};
+
+		mServiceHelper = ServiceHelper.getInstance(this);
+		this.registerReceiver(requestReceiver, filter);
+
+		if (requestId == null) {
+		} else if (mServiceHelper.isRequestPending(requestId)) {
+		} else {
+			preencheDados();
+		}	
+	}
+	
+	private void preencheDados() {
+		Cursor cursor = getContentResolver().query(EstabelecimentosConstants.CONTENT_URI, null, null, null, null);
+
+		if (cursor.moveToFirst()) {
+			EditText nome = (EditText) findViewById(R.id.EditText04);
+		    int index = cursor.getColumnIndexOrThrow(EstabelecimentosConstants.NOME);
+			nome.setText(cursor.getString(index));
+			EditText endereco = (EditText) findViewById(R.id.EditText01);
+			index = cursor.getColumnIndexOrThrow(EstabelecimentosConstants.ENDERECO);
+			endereco.setText(cursor.getString(index));
+			EditText telefone = (EditText) findViewById(R.id.EditText02);
+			index = cursor.getColumnIndexOrThrow(EstabelecimentosConstants.TELEFONE);
+			telefone.setText(cursor.getString(index));
+			EditText gostei = (EditText) findViewById(R.id.EditText03);
+			index = cursor.getColumnIndexOrThrow(EstabelecimentosConstants.GOSTEI);
+			gostei.setText(cursor.getString(index));
+
+			//EditText idEstabelecimento = (EditText) findViewById(R.id.idEstabelecimento);
+			//index = cursor.getColumnIndexOrThrow(EstabelecimentosConstants.);
+			//idEstabelecimento.setText(id);
+		}
+		cursor.close();
 	}
 
 	@Override

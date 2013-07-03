@@ -1,6 +1,6 @@
 package com.example.restclient.service;
 
-interface EstabelecimentosProcessorCallback {
+interface ProcessorCallback {
 
 	void send(int resultCode);
 

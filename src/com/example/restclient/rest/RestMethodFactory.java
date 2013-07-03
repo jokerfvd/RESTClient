@@ -18,11 +18,13 @@ public class RestMethodFactory {
 	private Context mContext;
 
 	private static final int ESTABELECIMENTOS = 1;
+	private static final int ESTABELECIMENTO_ID = 2;
 
 	private RestMethodFactory(Context context) {
 		mContext = context.getApplicationContext();
 		uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 		uriMatcher.addURI(EstabelecimentosConstants.AUTHORITY, EstabelecimentosConstants.TABLE_NAME, ESTABELECIMENTOS);
+		uriMatcher.addURI(EstabelecimentosConstants.AUTHORITY, EstabelecimentosConstants.TABLE_NAME+"/#", ESTABELECIMENTO_ID);
 	}
 
 	public static RestMethodFactory getInstance(Context context) {
@@ -44,7 +46,12 @@ public class RestMethodFactory {
 				return new GetEstabelecimentosRestMethod(mContext);
 			}
 			break;
-		}
+		case ESTABELECIMENTO_ID:
+			if (method == Method.GET) {
+				return new GetEstabelecimentoRestMethod(mContext, headers);
+			}
+			break;
+		}	
 
 		return null;
 	}

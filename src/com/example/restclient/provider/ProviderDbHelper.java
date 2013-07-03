@@ -16,16 +16,19 @@ public class ProviderDbHelper extends SQLiteOpenHelper {
 
 	//Name of the database file
 	private static final String DATABASE_NAME = "restdroid.db";
-	private static final int DATABASE_VERSION = 1;
+	private static final int DATABASE_VERSION = 3;
 
 	public ProviderDbHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
 
+	/**
+	 * Só é chamado na 1ª vez que o apk é instalado, depois é chamado o onUpgrade quando muda a versão
+	 */
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		
-		// CREATE PROFILE TABLE
+		// CREATE Estabelecimento TABLE
 		StringBuilder sqlBuilder = new StringBuilder();
 		sqlBuilder.append("CREATE TABLE " + EstabelecimentosConstants.TABLE_NAME + " (");
 		sqlBuilder.append(ResourceTable._ID + " INTEGER, ");
@@ -34,7 +37,9 @@ public class ProviderDbHelper extends SQLiteOpenHelper {
 		sqlBuilder.append(EstabelecimentosConstants.NOME + " TEXT, ");
 		sqlBuilder.append(EstabelecimentosConstants.ENDERECO + " TEXT, ");
 		sqlBuilder.append(EstabelecimentosConstants.TELEFONE + " TEXT, ");
-		sqlBuilder.append(EstabelecimentosConstants.RANK + " TEXT ");
+		sqlBuilder.append(EstabelecimentosConstants.GOSTEI + " INTEGER, ");
+		sqlBuilder.append(EstabelecimentosConstants.LATITUDE + " TEXT, ");
+		sqlBuilder.append(EstabelecimentosConstants.LONGITUDE + " TEXT ");
 		sqlBuilder.append(");");
 		
 		String sql = sqlBuilder.toString();
@@ -46,6 +51,13 @@ public class ProviderDbHelper extends SQLiteOpenHelper {
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		//Gets called when the database is upgraded, i.e. the version number changes
+		StringBuilder sqlBuilder = new StringBuilder();
+		sqlBuilder.append("DROP TABLE " + EstabelecimentosConstants.TABLE_NAME +";");
+		String sql = sqlBuilder.toString();
+		Log.i(TAG, "Removendo DB table com a sql: '" + sql + "'");
+		db.execSQL(sql);
+		
+		onCreate(db);
 	}
 
 }

@@ -36,13 +36,21 @@ public final class EstabelecimentosProviderContract {
 						EstabelecimentoTable.NOME, 
 						EstabelecimentoTable.ENDERECO,
 						EstabelecimentoTable.TELEFONE,
-						EstabelecimentoTable.RANK
+						EstabelecimentoTable.GOSTEI,
+						EstabelecimentoTable.LATITUDE,
+						EstabelecimentoTable.LONGITUDE,
+						EstabelecimentoTable.TID
 				};
 				
 				DISPLAY_COLUMNS = new String[] { 
-						EstabelecimentoTable._ID, 
+						EstabelecimentoTable._ID, 					
 						EstabelecimentoTable.NOME, 
 						EstabelecimentoTable.ENDERECO,
+						EstabelecimentoTable.TELEFONE,
+						EstabelecimentoTable.GOSTEI,
+						EstabelecimentoTable.LATITUDE,
+						EstabelecimentoTable.LONGITUDE,
+						EstabelecimentoTable.TID
 				};
 			}
 			
@@ -50,8 +58,10 @@ public final class EstabelecimentosProviderContract {
 			public static final String NOME = "nome";
 			public static final String ENDERECO = "endereco";
 			public static final String TELEFONE = "telefone";
-			public static final String RANK = "rank";
-			public static final String COORDENADA = "coordenada";
+			public static final String GOSTEI = "gostei";
+			public static final String LATITUDE = "latitude";
+			public static final String LONGITUDE = "longitude";
+			public static final String TID = "tid";
 
 			
 			// Prevent instantiation of this class

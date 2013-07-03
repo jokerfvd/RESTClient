@@ -15,7 +15,7 @@ public class GetEstabelecimentosRestMethod extends AbstractRestMethod<Estabeleci
 	
 	private Context mContext;
 
-	private static final URI PROFILE_URI = URI
+	private static final URI ESTABELECIMENTO_URI = URI
 			.create("http://restserveruff.herokuapp.com/estabelecimentos.json");
 	
 	public GetEstabelecimentosRestMethod(Context context) {
@@ -25,7 +25,7 @@ public class GetEstabelecimentosRestMethod extends AbstractRestMethod<Estabeleci
 	@Override
 	protected Request buildRequest() {
 
-		return new Request(Method.GET, PROFILE_URI, null, null);
+		return new Request(Method.GET, ESTABELECIMENTO_URI, null, null);
 	}
 	
 	@Override

@@ -21,7 +21,8 @@ public class EstabelecimentosConstants {
 	public static final String NOME = "nome";
 	public static final String ENDERECO = "endereco";
 	public static final String TELEFONE = "telefone";
-	public static final String RANK = "rank";
-	public static final String COORDENADA = "coordenada";
+	public static final String GOSTEI = "gostei";
+	public static final String LATITUDE = "latitude";
+	public static final String LONGITUDE = "longitude";
 
 }
